@@ -5,19 +5,18 @@ on:
 
 jobs:
   extract-and-release:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-
       - name: Install dependencies
         run: |
           pip3 install docker
+
+      - name: Pull Docker image
+        run: |
+          docker pull zhyncs/trtllm:latest
 
       - name: Extract wheel
         run: |
@@ -34,3 +33,5 @@ jobs:
           tag_name: ${{ env.VERSION }}
           name: "TensorRT LLM ${{ env.VERSION }}"
           files: ${{ env.WHL_FILE }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -9,6 +9,7 @@ def extract_latest_whl(
     image_name: str = "zhyncs/trtllm:latest", output_dir: str = "./output"
 ):
     client = docker.from_env()
+
     container = client.containers.create(image_name)
 
     try:
