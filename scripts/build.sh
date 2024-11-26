@@ -26,3 +26,5 @@ make -C docker wheel_build \
     CUBLAS_VERSION=${CUBLAS_VER} \
     NVRTC_VER=${NVRTC_VER} \
     CUDA_RUNTIME=${CUDA_RUNTIME}
+
+docker push zhyncs/trtllm:latest
