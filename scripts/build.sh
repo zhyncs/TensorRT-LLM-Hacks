@@ -2,6 +2,10 @@
 
 set -ex
 
+rm -rf TensorRT-LLM
+git clone -b main --recurse-submodules --depth=1 https://github.com/NVIDIA/TensorRT-LLM
+cd TensorRT-LLM
+
 BRANCH=$(git rev-parse --abbrev-ref HEAD | cut -d '/' -f2)
 TRT_VER=$(grep "^TRT_VER=" docker/common/install_tensorrt.sh | cut -d'"' -f2)
 CUDA_VER=$(grep "^CUDA_VER=" docker/common/install_tensorrt.sh | cut -d'"' -f2 | cut -d' ' -f1)
