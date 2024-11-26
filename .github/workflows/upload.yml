@@ -1,0 +1,36 @@
+name: Upload
+
+on:
+  workflow_dispatch:
+
+jobs:
+  extract-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip3 install docker
+
+      - name: Extract wheel
+        run: |
+          cd scripts
+          python3 extract.py
+          WHL_FILE=$(ls $GITHUB_WORKSPACE/scripts/output/tensorrt_llm-*.whl)
+          echo "WHL_FILE=$WHL_FILE" >> $GITHUB_ENV
+          VERSION=$(echo $WHL_FILE | grep -oP 'tensorrt_llm-\K[^-]+')
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Create Release and Upload
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ env.VERSION }}
+          name: "TensorRT LLM ${{ env.VERSION }}"
+          files: ${{ env.WHL_FILE }}
