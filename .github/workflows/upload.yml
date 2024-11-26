@@ -1,4 +1,4 @@
-name: Upload
+name: Upload TensorRT LLM Wheel
 
 on:
   workflow_dispatch:
